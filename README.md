@@ -1,4 +1,4 @@
-# UVLinux5.2
+# UV 5.2
 # Projet Linux Embarqué
 # Étudiants:
 
