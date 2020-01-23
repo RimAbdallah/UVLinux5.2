@@ -193,23 +193,12 @@ On pourra ainsi capturer les flux vidéo/image de la caméra de la RPI3.
 
 ### Makefile
 
-Un certain nombre de commandes peuvent être automatisées à l'aide d'un Makefile. On donne dans ce projet un exemple d'utilisation (qui peut sembler superflu, effectivement). On y a défini deux règles (`installation` et `client`), qui sont appelées par les commandes suivantes :
 - `make installation` : Lorsque la carte SD est directement connectée à l'ordinateur, au moment du flashage par exemple, cette commande permet de copier le code Python pour l'exécutable pour le module V4L2 (permettant l'utilisation de la caméra et son serveur) au bon endroit sur la carte,
 - `make client` : Lorsque l'on est connecté à la carte en ethernet, permet le lancement du client. Attention, cette commande ne doit être utilisée qu'une fois les serveurs lancés.
 
-### Utilisation - Etapes
+### Utilisation - Etapes (Client <--> Serveur) 
 
 On part du principe que tout a été correctement configuré et que tous les fichiers nécessaires ont été copiées au bon endroit.
 
 1. **Lancement serveurs :** Dans deux terminaux, se connecter en SSH (`ssh user@172.20.11.112`) puis passer superutilisateur (mot de passe `root1*`). Se placer dans le dossier `/root`et lancer les serveurs (`./v4l2grab` pour la caméra).
 2. **Lancement client :** Dans un nouveau terminal, lancer directement le client (`make client`). Il suffit alors de suivre les instructions du client pour communiquer avec les deux serveurs.
-
-### Remarque
-
-En l'état actuel, les images sont enregistrées dans le même répertoire que celui où se trouve le client, sur l'ordinateur. Néanmoins, les images sont envoyées avec un certains retard à l'ordinateur hébergeant le client:
-- Lorsqu'on envoie "1 s" la première fois : le serveur crée l'image 0, mais ne l'envoie pas au client.
-- Lorsqu'on envoie "1 s" la deuxième fois : le serveur crée l'image 1, mais ne l'envoie pas au client.
-- Lorsqu'on envoie "1 s" la troisième fois : le serveur crée l'image 2, mais il envoie l'image 1 au client et elle est bien reçue et sauvegardée dans le répertoire du client.
-- Lorsqu'on envoie "1 s" la quatrième fois : le serveur crée l'image 3, il envoie l'image 2 au client et elle est bien reçue et sauvegardée dans le répertoire du client et ainsi de suite...
-
-Ainsi, seulement l'image 1 et la dernière image créée seront perdues, les autres vont arriver avec du retard sur l'ordinateur client.
